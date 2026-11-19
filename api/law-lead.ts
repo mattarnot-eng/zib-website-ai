@@ -9,8 +9,8 @@ export const config = { runtime: "edge" };
  * Both forms on the page ("Book a 20-minute growth call") post here. The lead
  * goes to HubSpot through captureLead (contact + Slack + HubSpot form, the same
  * path as the audit and the labs), and a full-detail alert is emailed to
- * LEAD_NOTIFY_EMAIL through Resend, because the suburb, spend and practice
- * areas don't have HubSpot properties yet.
+ * LEAD_NOTIFY_EMAIL through Resend, because the suburb and practice areas
+ * don't have HubSpot properties yet.
  *
  * Both are best-effort and run in parallel. Either one landing counts: the
  * browser shows the "done" state, so a lead must never be lost silently.
@@ -23,7 +23,6 @@ type Body = {
   phone?: string;
   email?: string;
   suburb?: string;
-  monthly_spend?: string;
   practice_areas?: string[];
   website?: string; // honeypot
   form?: string;
@@ -53,7 +52,6 @@ export default async function handler(req: Request): Promise<Response> {
   const phone = clip(body.phone, 40);
   const email = clip(body.email, 200);
   const suburb = clip(body.suburb, 120);
-  const spend = clip(body.monthly_spend, 60);
   const areas = (Array.isArray(body.practice_areas) ? body.practice_areas : [])
     .map((a) => clip(a, 60))
     .filter(Boolean)
@@ -61,21 +59,20 @@ export default async function handler(req: Request): Promise<Response> {
   const form = clip(body.form, 40) === "lead-final" ? "bottom form" : "top form";
 
   if (!name) return json({ error: "Please add your name." }, 400);
-  if (!firm) return json({ error: "Please add your firm name." }, 400);
   if (phone.replace(/\D/g, "").length < 6) return json({ error: "Please add a valid phone number." }, 400);
   if (!emailRe.test(email)) return json({ error: "That email address doesn't look right." }, 400);
 
   const blocked = await guard(req, "law-lead");
   if (blocked) return blocked;
 
-  const lead = { name, firm, phone, email, suburb, spend, areas, form };
-  console.log("[law-lead]", { firm, email, suburb, spend, areas: areas.join(", "), form });
+  const lead = { name, firm, phone, email, suburb, areas, form };
+  console.log("[law-lead]", { firm, email, suburb, areas: areas.join(", "), form });
 
   const [hubspot, mail] = await Promise.allSettled([
     captureLead({
       email,
       firstname: name.split(/\s+/)[0],
-      company: firm,
+      company: firm || undefined,
       phone,
       website: "",
       source: SOURCE,
@@ -91,7 +88,7 @@ export default async function handler(req: Request): Promise<Response> {
 
 async function sendAlert(p: {
   name: string; firm: string; phone: string; email: string;
-  suburb: string; spend: string; areas: string[]; form: string;
+  suburb: string; areas: string[]; form: string;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.LEAD_NOTIFY_FROM || "onboarding@resend.dev";
@@ -110,11 +107,10 @@ async function sendAlert(p: {
   <p style="color:#6B6B6B;margin:0 0 24px;">${SOURCE} · ${esc(p.form)} · wants a 20-minute growth call</p>
   <table style="border-collapse:collapse;width:100%;font-size:14px;">
     ${row("Name", esc(p.name))}
-    ${row("Firm", esc(p.firm))}
+    ${row("Company", esc(p.firm))}
     ${row("Phone", `<a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>`)}
     ${row("Email", `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>`)}
     ${row("Suburb or city", esc(p.suburb))}
-    ${row("Monthly spend", esc(p.spend))}
     ${row("Practice areas", esc(p.areas.join(", ")))}
   </table>
 </body></html>`;
@@ -122,7 +118,7 @@ async function sendAlert(p: {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to, subject: `New law firm enquiry · ${p.firm} · ${p.suburb || p.email}`, html, reply_to: p.email }),
+    body: JSON.stringify({ from, to, subject: `New law firm enquiry · ${p.firm || p.name} · ${p.suburb || p.email}`, html, reply_to: p.email }),
     signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) {

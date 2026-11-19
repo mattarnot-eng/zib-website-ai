@@ -856,12 +856,10 @@ footer img{height:22px;width:auto}
     <p class="fsub">Tell us about your firm. We’ll call to lock in a time.</p>
     <div class="fgrid">
       <div class="f"><label for="hero-name">Your name</label><input id="hero-name" name="name" autocomplete="name" required></div>
-      <div class="f"><label for="hero-firm">Firm name</label><input id="hero-firm" name="firm" autocomplete="organization" required></div>
+      <div class="f"><label for="hero-firm">Company name <span style="font-weight:400;color:var(--text-dim)">(optional)</span></label><input id="hero-firm" name="firm" autocomplete="organization"></div>
       <div class="f"><label for="hero-phone">Phone</label><input id="hero-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
       <div class="f"><label for="hero-email">Email</label><input id="hero-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="f"><label for="hero-sub">Suburb or city</label><input id="hero-sub" name="suburb" autocomplete="address-level2" placeholder="e.g. Berwick" required></div>
-      <div class="f"><label for="hero-spend">Monthly marketing spend</label><select id="hero-spend" name="monthly_spend" required>
-        <option value="" selected disabled>Choose</option><option>Under $2,000</option><option>$2,000–$5,000</option><option>$5,000–$10,000</option><option>Over $10,000</option><option>Not sure yet</option></select></div>
+      <div class="f full"><label for="hero-sub">Suburb or city</label><input id="hero-sub" name="suburb" autocomplete="address-level2" placeholder="e.g. Berwick" required></div>
       <fieldset class="f full"><legend>Practice areas</legend><div class="pa" role="group">
         <label><input type="checkbox" name="practice_areas" value="Family"><span>Family</span></label><label><input type="checkbox" name="practice_areas" value="Criminal"><span>Criminal</span></label><label><input type="checkbox" name="practice_areas" value="Wills &amp; estates"><span>Wills &amp; estates</span></label><label><input type="checkbox" name="practice_areas" value="Conveyancing"><span>Conveyancing</span></label><label><input type="checkbox" name="practice_areas" value="General practice"><span>General practice</span></label><label><input type="checkbox" name="practice_areas" value="Employment"><span>Employment</span></label><label><input type="checkbox" name="practice_areas" value="Other"><span>Other</span></label>
       </div></fieldset>
@@ -1224,12 +1222,10 @@ footer img{height:22px;width:auto}
     <p class="fsub">Tell us about your firm. We’ll call to lock in a time.</p>
     <div class="fgrid">
       <div class="f"><label for="final-name">Your name</label><input id="final-name" name="name" autocomplete="name" required></div>
-      <div class="f"><label for="final-firm">Firm name</label><input id="final-firm" name="firm" autocomplete="organization" required></div>
+      <div class="f"><label for="final-firm">Company name <span style="font-weight:400;color:var(--text-dim)">(optional)</span></label><input id="final-firm" name="firm" autocomplete="organization"></div>
       <div class="f"><label for="final-phone">Phone</label><input id="final-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
       <div class="f"><label for="final-email">Email</label><input id="final-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="f"><label for="final-sub">Suburb or city</label><input id="final-sub" name="suburb" autocomplete="address-level2" placeholder="e.g. Berwick" required></div>
-      <div class="f"><label for="final-spend">Monthly marketing spend</label><select id="final-spend" name="monthly_spend" required>
-        <option value="" selected disabled>Choose</option><option>Under $2,000</option><option>$2,000–$5,000</option><option>$5,000–$10,000</option><option>Over $10,000</option><option>Not sure yet</option></select></div>
+      <div class="f full"><label for="final-sub">Suburb or city</label><input id="final-sub" name="suburb" autocomplete="address-level2" placeholder="e.g. Berwick" required></div>
       <fieldset class="f full"><legend>Practice areas</legend><div class="pa" role="group">
         <label><input type="checkbox" name="practice_areas" value="Family"><span>Family</span></label><label><input type="checkbox" name="practice_areas" value="Criminal"><span>Criminal</span></label><label><input type="checkbox" name="practice_areas" value="Wills &amp; estates"><span>Wills &amp; estates</span></label><label><input type="checkbox" name="practice_areas" value="Conveyancing"><span>Conveyancing</span></label><label><input type="checkbox" name="practice_areas" value="General practice"><span>General practice</span></label><label><input type="checkbox" name="practice_areas" value="Employment"><span>Employment</span></label><label><input type="checkbox" name="practice_areas" value="Other"><span>Other</span></label>
       </div></fieldset>
@@ -1348,7 +1344,7 @@ document.querySelectorAll("form[data-lead]").forEach(function (f) {
     if (!err) { err = document.createElement("p"); err.className = "ferr"; err.setAttribute("role", "alert"); btn.insertAdjacentElement("beforebegin", err); }
     err.textContent = ""; f.dataset.sending = "1"; btn.disabled = true; btn.style.opacity = ".7";
     var body = { name: fd.get("name"), firm: fd.get("firm"), phone: fd.get("phone"), email: fd.get("email"),
-      suburb: fd.get("suburb"), monthly_spend: fd.get("monthly_spend"), practice_areas: fd.getAll("practice_areas"),
+      suburb: fd.get("suburb"), practice_areas: fd.getAll("practice_areas"),
       website: fd.get("website") || "", form: f.id, clickIds: (window.zibClickIds && window.zibClickIds()) || {} };
     var done = function () { delete f.dataset.sending; btn.disabled = false; btn.style.opacity = ""; };
     fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
