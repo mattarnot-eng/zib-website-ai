@@ -4,7 +4,7 @@ import { guard } from "../lib/rateLimit";
 export const config = { runtime: "edge" };
 
 /**
- * Law Firm Growth landing page enquiries (/law-firm-growth).
+ * Law Firm Growth landing page enquiries (/law-firm-marketing).
  *
  * Both forms on the page ("Book a 20-minute growth call") post here. The lead
  * goes to HubSpot through captureLead (contact + Slack + HubSpot form, the same
