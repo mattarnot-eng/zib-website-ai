@@ -175,6 +175,10 @@ section{scroll-margin-top:76px}
 .hero h1{font-size:var(--fs-hero);letter-spacing:-.04em;line-height:.96}
 .hero h1 span{display:block;animation:rise 900ms var(--ease-smooth-out) both}
 .hero h1 span+span{animation-delay:140ms}
+/* Longer, sentence-style headline: smaller than the original two-line one,
+   with the orange phrase inline. */
+.hero h1{font-size:clamp(2.2rem,1rem + 2.6vw,3.7rem);line-height:1.02}
+.hero h1 span span{display:inline;animation:none}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}}
 .pos{list-style:none;margin:1.75rem 0 0;padding:0;display:grid;gap:.55rem;max-width:40rem}
 .pos li{display:grid;grid-template-columns:4.2rem 1fr;gap:.75rem;align-items:baseline;font-size:1.06rem;line-height:1.4;animation:rise 800ms var(--ease-smooth-out) both}
@@ -658,7 +662,7 @@ footer img{height:22px;width:auto}
   .hero{padding:1.5rem 0 2rem}
   .hero::before{background-size:40px 40px}
   .gbadge{margin-bottom:1rem;font-size:.78rem}
-  .hero h1{font-size:2.45rem;line-height:1}
+  .hero h1{font-size:2.05rem;line-height:1.05}
   .pos{margin-top:1.1rem;gap:.4rem}
   .pos li{grid-template-columns:3.4rem 1fr;font-size:.95rem;gap:.5rem}
   .pos b{font-size:.66rem}
@@ -827,7 +831,7 @@ footer img{height:22px;width:auto}
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <a class="gbadge" href="https://www.google.com/maps?cid=16389199047539228780" target="_blank" rel="noopener"><span class="g"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.7z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6H1.3a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.8 3.6-4.9 6.7-4.9z"/></svg></span><b>4.8</b><span class="stars" role="img" aria-label="Rated 4.8 out of 5 on Google"><i></i><i></i></span><span>90+ Google reviews</span></a>
-      <h1 id="h-hero"><span>A steady flow of the right matters.</span> <span class="o">Without relying on referrals.</span></h1>
+      <h1 id="h-hero"><span>See how we’ve helped law firms <span class="o">win new clients consistently</span> for 10+ years, with one package across Google Ads, Maps, SEO and your website.</span></h1>
       <ul class="pos">
         <li><b>Who</b><span>Australian law firms: family, criminal, wills &amp; estates, conveyancing.</span></li>
         <li><b>Why</b><span>Most firms live on referrals and miss the clients searching Google.</span></li>
